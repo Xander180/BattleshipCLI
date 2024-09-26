@@ -1,5 +1,10 @@
 import java.util.Scanner;
 
+/**
+ * Main entry point for program
+ * Creates 10x10 field and asks for user input
+ * @author Wilson Ramirez
+ */
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
