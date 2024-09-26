@@ -3,7 +3,8 @@
  * the field
  */
 public class Field {
-    private static char[][] field = new char[10][10];
+    private final int FIELD_SIZE = 10;
+    private char[][] field = new char[FIELD_SIZE][FIELD_SIZE];
 
     public Field() {
     }
@@ -29,7 +30,8 @@ public class Field {
             }
             System.out.print(letters[i]);
             for (int j = 0; j < field[i].length; j++) {
-                System.out.print(" ~");
+                char FOG_OF_WAR_SYMBOL = '~';
+                System.out.print(" " + FOG_OF_WAR_SYMBOL);
             }
             System.out.println();
         }
