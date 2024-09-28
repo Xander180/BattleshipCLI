@@ -1,3 +1,4 @@
+import model.Field;
 import java.util.Scanner;
 
 /**

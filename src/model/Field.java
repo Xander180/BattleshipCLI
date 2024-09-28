@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Class for creating the 10x10 field, as well as taking user coordinates for (in the future) placing ships and updating
  * the field
@@ -95,7 +97,7 @@ public class Field {
      * @param coordinate2 Second coordinate
      * @return true if input is valid, else false
      */
-    public boolean validInputs(String[] coordinate1, String[] coordinate2) {
+    private boolean validInputs(String[] coordinate1, String[] coordinate2) {
 
         if (coordinate1.length == 2 && coordinate2.length == 2) {
             if (coordinate1[0].equals(coordinate2[0]) || coordinate1[1].equals(coordinate2[1])) {
@@ -119,7 +121,7 @@ public class Field {
      * @param currentRow Current row being checked
      * @return new current row
      */
-    public char checkRow(char row2, char currentRow) {
+    private char checkRow(char row2, char currentRow) {
         // if true, ship is placed vertically from bottom to top
         if (currentRow > row2) {
             currentRow -= 1;
