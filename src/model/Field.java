@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Objects;
+import java.util.Scanner;
+
 /**
  * Class for creating the 10x10 field, as well as taking user coordinates for (in the future) placing ships and updating
  * the field
@@ -90,6 +93,50 @@ public class Field {
         }
     }
 
+    public void playGame() {
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        Ship ship = Ship.AIRCRAFT_CARRIER;
+
+        while (ship != Ship.NONE) {
+            switch (ship) {
+                case AIRCRAFT_CARRIER:
+                    System.out.println("Enter the coordinates for the Aircraft Carrier (5 cells):");
+                    input = scanner.nextLine();
+                    createShip(input);
+                    ship = Ship.BATTLESHIP;
+                    continue;
+
+                case BATTLESHIP:
+                    System.out.println("Enter the coordinates for the Battleship (4 cells):");
+                    input = scanner.nextLine();
+                    createShip(input);
+                    ship = Ship.SUBMARINE;
+                    continue;
+
+                case SUBMARINE:
+                    System.out.println("Enter the coordinates for the submarine (3 cells):");
+                    input = scanner.nextLine();
+                    createShip(input);
+                    ship = Ship.CRUISER;
+                    continue;
+
+                case CRUISER:
+                    System.out.println("Enter the coordinates for the Cruiser (3 cells):");
+                    input = scanner.nextLine();
+                    createShip(input);
+                    ship = Ship.DESTROYER;
+                    continue;
+
+                case DESTROYER:
+                    System.out.println("Enter the coordinates for the Destroyer (2 cells):");
+                    input = scanner.nextLine();
+                    createShip(input);
+                    ship = Ship.NONE;
+            }
+        }
+    }
+
     /**
      * Checks if user input is valid
      * Ensures that letters and numbers are within range of the field, and that diagonal placements are not possible
@@ -100,7 +147,7 @@ public class Field {
     private boolean validInputs(String[] coordinate1, String[] coordinate2) {
 
         if (coordinate1.length == 2 && coordinate2.length == 2) {
-            if (coordinate1[0].equals(coordinate2[0]) || coordinate1[1].equals(coordinate2[1])) {
+            if (Objects.equals(coordinate1[0], coordinate2[0]) || Objects.equals(coordinate1[1], coordinate2[1])) {
                 if (coordinate1[0].charAt(0) >= 'A' && coordinate1[0].charAt(0) <= 'J') {
                     if (coordinate2[0].charAt(0) >= 'A' && coordinate2[0].charAt(0) <= 'J') {
                         int i = Integer.parseInt(coordinate1[1]);

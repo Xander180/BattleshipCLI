@@ -1,0 +1,5 @@
+package model;
+
+public enum Ship {
+    AIRCRAFT_CARRIER, BATTLESHIP, SUBMARINE, CRUISER, DESTROYER, NONE
+}
