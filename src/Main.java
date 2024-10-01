@@ -1,4 +1,4 @@
-import model.Field;
+import model.Game;
 
 /**
  * Main entry point for program
@@ -7,8 +7,8 @@ import model.Field;
  */
 public class Main {
     public static void main(String[] args) {
-        Field field = new Field();
+        Game game = new Game();
 
-        field.playGame();
+        game.playGame();
     }
 }
