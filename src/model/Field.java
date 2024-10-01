@@ -36,9 +36,17 @@ public class Field {
             System.out.print(letters[i]);
             for (int j = 0; j < this.field[i].length; j++) {
                 char FOG_OF_WAR_SYMBOL = '~';
+                char UNDAMAGED_CELL = 'O';
+                char DAMAGED_CELL = 'X';
+                char MISSED_CELL = 'M';
                 if (this.field[i][j] == 1) {
-                    System.out.print(" " + 'O');
-                } else {
+                    System.out.print(" " + UNDAMAGED_CELL);
+                } else if (this.field[i][j] == 2) {
+                    System.out.print(" " + DAMAGED_CELL);
+                } else if (this.field[i][j] == 3) {
+                    System.out.print(" " + MISSED_CELL);
+                }
+                else {
                     System.out.print(" " + FOG_OF_WAR_SYMBOL);
                 }
             }
@@ -92,6 +100,26 @@ public class Field {
         }
     }
 
+    /**
+     * Returns current value of cell
+     * @param row Selected row
+     * @param col Selected column
+     * @return Cell value
+     */
+    public int getCellValue(int row, int col) {
+        return this.field[row][col];
+    }
+
+    /**
+     * Updates current cell value
+     * 1 = Undamaged ship cell
+     * 2 = Damaged ship cell
+     * 3 = Missed shot
+     *
+     * @param row Selected row
+     * @param col Selected column
+     * @param value Updated value
+     */
     public void setCellValue(int row, int col, int value) {
         this.field[row][col] = value;
     }
@@ -166,7 +194,7 @@ public class Field {
      * @param col Current column being checked
      * @return True if position exists, else false
      */
-    private boolean isValidPosition(int row, int col) {
+    public boolean isValidPosition(int row, int col) {
         if (row < 0 || col < 0 || row > field.length - 1 || col > field[0].length - 1) {
             return false;
         }
