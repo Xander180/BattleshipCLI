@@ -17,7 +17,7 @@ public class Game {
         String input;
         Ship ship = Ship.AIRCRAFT_CARRIER;
 
-        field.printField();
+        field.printField(true);
 
         while (ship != Ship.NONE) {
             switch (ship) {
@@ -26,7 +26,7 @@ public class Game {
                     input = scanner.nextLine();
                     if (createShip(input, ship, field)) {
                         ship = Ship.BATTLESHIP;
-                        field.printField();
+                        field.printField(true);
                         continue;
                     }
                     break;
@@ -36,7 +36,7 @@ public class Game {
                     input = scanner.nextLine();
                     if (createShip(input, ship, field)) {
                         ship = Ship.SUBMARINE;
-                        field.printField();
+                        field.printField(true);
                         continue;
                     }
                     break;
@@ -46,7 +46,7 @@ public class Game {
                     input = scanner.nextLine();
                     if (createShip(input, ship, field)) {
                         ship = Ship.CRUISER;
-                        field.printField();
+                        field.printField(true);
                         continue;
                     }
                     break;
@@ -56,7 +56,7 @@ public class Game {
                     input = scanner.nextLine();
                     if (createShip(input, ship, field)) {
                         ship = Ship.DESTROYER;
-                        field.printField();
+                        field.printField(true);
                         continue;
                     }
                     break;
@@ -66,13 +66,14 @@ public class Game {
                     input = scanner.nextLine();
                     if (createShip(input, ship, field)) {
                         ship = Ship.NONE;
-                        field.printField();
+                        field.printField(true);
                         continue;
                     }
                     break;
             }
         }
         System.out.println("The game starts!");
+        field.printField(false);
         takeShot();
     }
 
@@ -95,13 +96,15 @@ public class Game {
         while (!isValid) {
             if (field.isValidPosition(coordinate[0], coordinate[1])) {
                 if (field.getCellValue(coordinate[0], coordinate[1]) == 0) {
-                    System.out.println("You missed!");
                     field.setCellValue(coordinate[0], coordinate[1], 3);
+                    field.printField(false);
+                    System.out.println("You missed!");
                 } else if (field.getCellValue(coordinate[0], coordinate[1]) == 1) {
-                    System.out.println("Direct hit!");
                     field.setCellValue(coordinate[0], coordinate[1], 2);
+                    field.printField(false);
+                    System.out.println("You hit a ship!");
                 }
-                field.printField();
+                field.printField(true);
                 isValid = true;
             } else {
                 Alert.getError(1);

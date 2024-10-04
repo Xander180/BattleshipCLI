@@ -17,7 +17,7 @@ public class Field {
     /**
      * Prints current field
      */
-    public void printField() {
+    public void printField(boolean gameOver) {
         char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
         for (int i = 0; i <= this.field.length; i++) {
@@ -35,11 +35,11 @@ public class Field {
             }
             System.out.print(letters[i]);
             for (int j = 0; j < this.field[i].length; j++) {
-                char FOG_OF_WAR_SYMBOL = '~';
-                char UNDAMAGED_CELL = 'O';
-                char DAMAGED_CELL = 'X';
-                char MISSED_CELL = 'M';
-                if (this.field[i][j] == 1) {
+                final char FOG_OF_WAR_SYMBOL = '~';
+                final char UNDAMAGED_CELL = 'O';
+                final char DAMAGED_CELL = 'X';
+                final char MISSED_CELL = 'M';
+                if (this.field[i][j] == 1 && gameOver) {
                     System.out.print(" " + UNDAMAGED_CELL);
                 } else if (this.field[i][j] == 2) {
                     System.out.print(" " + DAMAGED_CELL);
@@ -199,6 +199,10 @@ public class Field {
             return false;
         }
         return true;
+    }
+
+    public enum Ship {
+        AIRCRAFT_CARRIER, BATTLESHIP, SUBMARINE, CRUISER, DESTROYER, NONE
     }
 }
 
