@@ -19,7 +19,6 @@ public class Field {
      */
     public void printField(boolean gameOver) {
         char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-
         for (int i = 0; i <= this.field.length; i++) {
             if (i == 0) {
                 System.out.print("  ");
@@ -39,11 +38,11 @@ public class Field {
                 final char UNDAMAGED_CELL = 'O';
                 final char DAMAGED_CELL = 'X';
                 final char MISSED_CELL = 'M';
-                if (this.field[i][j] == 1 && gameOver) {
+                if (gameOver && (this.field[i][j] == 5 || this.field[i][j] == 4 || this.field[i][j] == 3 || this.field[i][j] == 2)) {
                     System.out.print(" " + UNDAMAGED_CELL);
-                } else if (this.field[i][j] == 2) {
+                } else if (this.field[i][j] == 6) {
                     System.out.print(" " + DAMAGED_CELL);
-                } else if (this.field[i][j] == 3) {
+                } else if (this.field[i][j] == 1) {
                     System.out.print(" " + MISSED_CELL);
                 }
                 else {
@@ -131,57 +130,61 @@ public class Field {
      * @return True if there are no adjacent ships, else false
      */
     public boolean checkAdjacentPositions(int row, int col) {
-        if (this.field[row][col] == 1) {
-            Alert.getError(3);
-            return false;
-        }
+        int[] ships = {5, 4, 3, 2};
 
-        if (isValidPosition(row - 1, col - 1)) {
-            if (this.field[row - 1][col - 1] == 1) {
+        for (int ship : ships) {
+            if (this.field[row][col] == ship) {
                 Alert.getError(3);
                 return false;
             }
-        }
-        if (isValidPosition(row - 1, col)) {
-            if (this.field[row - 1][col] == 1) {
-                Alert.getError(3);
-                return false;
+
+            if (isValidPosition(row - 1, col - 1)) {
+                if (this.field[row - 1][col - 1] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
             }
-        }
-        if (isValidPosition(row - 1, col + 1)) {
-            if (this.field[row - 1][col + 1] == 1) {
-                Alert.getError(3);
-                return false;
+            if (isValidPosition(row - 1, col)) {
+                if (this.field[row - 1][col] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
             }
-        }
-        if (isValidPosition(row, col - 1)) {
-            if (this.field[row][col - 1] == 1) {
-                Alert.getError(3);
-                return false;
+            if (isValidPosition(row - 1, col + 1)) {
+                if (this.field[row - 1][col + 1] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
             }
-        }
-        if (isValidPosition(row, col + 1)) {
-            if (this.field[row][col + 1] == 1) {
-                Alert.getError(3);
-                return false;
+            if (isValidPosition(row, col - 1)) {
+                if (this.field[row][col - 1] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
             }
-        }
-        if (isValidPosition(row + 1, col - 1)) {
-            if (this.field[row + 1][col - 1] == 1) {
-                Alert.getError(3);
-                return false;
+            if (isValidPosition(row, col + 1)) {
+                if (this.field[row][col + 1] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
             }
-        }
-        if (isValidPosition(row + 1, col)) {
-            if (this.field[row + 1][col] == 1) {
-                Alert.getError(3);
-                return false;
+            if (isValidPosition(row + 1, col - 1)) {
+                if (this.field[row + 1][col - 1] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
             }
-        }
-        if (isValidPosition(row + 1, col + 1)) {
-            if (this.field[row + 1][col + 1] == 1) {
-                Alert.getError(3);
-                return false;
+            if (isValidPosition(row + 1, col)) {
+                if (this.field[row + 1][col] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
+            }
+            if (isValidPosition(row + 1, col + 1)) {
+                if (this.field[row + 1][col + 1] == ship) {
+                    Alert.getError(3);
+                    return false;
+                }
             }
         }
 
@@ -199,10 +202,6 @@ public class Field {
             return false;
         }
         return true;
-    }
-
-    public enum Ship {
-        AIRCRAFT_CARRIER, BATTLESHIP, SUBMARINE, CRUISER, DESTROYER, NONE
     }
 }
 

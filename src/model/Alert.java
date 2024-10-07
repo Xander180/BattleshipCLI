@@ -19,4 +19,15 @@ public class Alert {
                 break;
         }
     }
+
+    public static void getInformation(int infoType) {
+        switch (infoType) {
+            case 1:
+                System.out.println("You hit a ship! Try again:");
+                break;
+            case 2:
+                System.out.println("You sank a ship! Specify a new target:");
+                break;
+        }
+    }
 }
