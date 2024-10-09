@@ -43,11 +43,18 @@ public class Alert {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Press Enter and pass the move to another player");
                 scanner.nextLine();
-                System.out.flush();
+                clearScreen();
                 break;
             case 5:
                 System.out.println("You sank the last ship. You won. Congratulations!");
                 break;
         }
+    }
+
+    public static void clearScreen() {
+        for (int i = 0; i < 1000; i++) {
+            System.out.print("\033[H\033[2J");
+        }
+        System.out.flush();
     }
 }
