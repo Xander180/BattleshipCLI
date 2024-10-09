@@ -269,10 +269,7 @@ public class Field {
      * @return True if position exists, else false
      */
     private boolean isValidPosition(int row, int col) {
-        if (row < 0 || col < 0 || row > field.length - 1 || col > field[0].length - 1) {
-            return false;
-        }
-        return true;
+        return row >= 0 && col >= 0 && row <= field.length - 1 && col <= field[0].length - 1;
     }
 
     /**
