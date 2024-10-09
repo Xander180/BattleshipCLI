@@ -2,9 +2,12 @@ package helper;
 
 import java.util.Scanner;
 
+/**
+ * Repository for all alert messages
+ */
 public class Alert {
     /**
-     * Repository for all alert messages
+     * All error messages
      * @param errorType Error code
      */
     public static void getError(int errorType) {
@@ -21,6 +24,10 @@ public class Alert {
         }
     }
 
+    /**
+     * All informational messages
+     * @param infoType Info Code
+     */
     public static void getInformation(int infoType) {
         switch (infoType) {
             case 1:

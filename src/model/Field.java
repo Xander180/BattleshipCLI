@@ -18,6 +18,9 @@ public class Field {
     private int cruiser;
     private int destroyer;
 
+    /**
+     * Constructor for Field
+     */
     public Field() {
         int FIELD_SIZE = 10;
         this.field = new int[FIELD_SIZE][FIELD_SIZE];
@@ -31,8 +34,9 @@ public class Field {
 
     /**
      * Prints current field
+     * @param showField if true, show all ship placements
      */
-    public void printField(boolean gameOver) {
+    public void printField(boolean showField) {
         char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
         for (int i = 0; i <= this.field.length; i++) {
             if (i == 0) {
@@ -53,7 +57,7 @@ public class Field {
                 final char UNDAMAGED_CELL = 'O';
                 final char DAMAGED_CELL = 'X';
                 final char MISSED_CELL = 'M';
-                if (gameOver && (this.field[i][j] == 5 || this.field[i][j] == 4 || this.field[i][j] == 3 || this.field[i][j] == 2)) {
+                if (showField && (this.field[i][j] == 5 || this.field[i][j] == 4 || this.field[i][j] == 3 || this.field[i][j] == 2)) {
                     System.out.print(" " + UNDAMAGED_CELL);
                 } else if (this.field[i][j] == 6) {
                     System.out.print(" " + DAMAGED_CELL);
@@ -276,6 +280,8 @@ public class Field {
      * Takes user input
      * Keeps count of active ships
      * Game ends when shipCount == 0
+     * @param player current player
+     * @param otherField other player's field
      */
     public void takeShot(int player, Field otherField) {
         Scanner scanner = new Scanner(System.in);

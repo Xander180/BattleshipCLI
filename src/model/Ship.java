@@ -14,6 +14,10 @@ public enum Ship {
         this.length = length;
     }
 
+    /**
+     * Gets the length of the ship
+     * @return ship length
+     */
     public int getLength() {
         return length;
     }

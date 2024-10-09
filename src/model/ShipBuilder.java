@@ -4,8 +4,18 @@ import helper.Alert;
 
 import java.util.Scanner;
 
+/**
+ * Where ships are created and placed
+ */
 public class ShipBuilder {
 
+    /**
+     * Creates ship based on specified coordinates
+     * @param coordinates user coordinates
+     * @param ship Ship to be placed
+     * @param field Field to place ship into
+     * @return true if ship was created successfully
+     */
     public static boolean createShip(String coordinates, Ship ship, Field field) {
         // Splits each coordinate into its own array entry
         String[] coordinatesArray = coordinates.split(" ");
@@ -115,6 +125,8 @@ public class ShipBuilder {
     /**
      * Starting method for game
      * Updates current ship to be placed
+     * @param field Field to place ships in
+     * @param player current player
      */
     public static void setShips(Field field, int player) {
         Scanner scanner = new Scanner(System.in);

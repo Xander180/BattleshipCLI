@@ -3,11 +3,14 @@ import model.Field;
 import model.ShipBuilder;
 
 /**
- * Main entry point for program
  * Creates 10x10 field and asks for user input
  * @author Wilson Ramirez
  */
 public class Main {
+    /**
+     * Main entry point for program
+     * @param args args
+     */
     public static void main(String[] args) {
         Field player1 = new Field();
         Field player2 = new Field();
