@@ -1,5 +1,9 @@
 package model;
 
+import helper.Alert;
+
+import java.util.Scanner;
+
 public class ShipBuilder {
 
     public static boolean createShip(String coordinates, Ship ship, Field field) {
@@ -7,12 +11,21 @@ public class ShipBuilder {
         String[] coordinatesArray = coordinates.split(" ");
         // Separates each coordinate's row letter and column number into their own array entry.
         // This allows for easier reading/manipulation of the letter and number individually
-        String[] coordinate1 = {String.valueOf(coordinatesArray[0].charAt(0)),
-                String.valueOf(Integer.parseInt(coordinatesArray[0].replaceAll("\\D", "")))};
-        String[] coordinate2 = {String.valueOf(coordinatesArray[1].charAt(0)),
-                String.valueOf(Integer.parseInt(coordinatesArray[1].replaceAll("\\D", "")))};
+        String[] coordinate1;
+        String[] coordinate2;
+
         // Used for verifying the correct length of the current ship
         int count;
+
+        try {
+            coordinate1 = new String[]{String.valueOf(coordinatesArray[0].charAt(0)),
+                    String.valueOf(Integer.parseInt(coordinatesArray[0].replaceAll("\\D", "")))};
+            coordinate2 = new String[]{String.valueOf(coordinatesArray[1].charAt(0)),
+                    String.valueOf(Integer.parseInt(coordinatesArray[1].replaceAll("\\D", "")))};
+        } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
+            Alert.getError(1);
+            return false;
+        }
 
         if (!Field.validInputs(coordinate1, coordinate2)) {
             Alert.getError(1);
@@ -97,5 +110,74 @@ public class ShipBuilder {
             }
         }
         return true;
+    }
+
+    /**
+     * Starting method for game
+     * Updates current ship to be placed
+     */
+    public static void setShips(Field field, int player) {
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        Ship ship = Ship.AIRCRAFT_CARRIER;
+
+        System.out.printf("Player %d, place your ships on the game field\n", player);
+
+        field.printField(true);
+
+        while (ship != Ship.NONE) {
+            switch (ship) {
+                case AIRCRAFT_CARRIER:
+                    System.out.println("Enter the coordinates for the Aircraft Carrier (5 cells):");
+                    input = scanner.nextLine();
+                    if (createShip(input, ship, field)) {
+                        ship = Ship.BATTLESHIP;
+                        field.printField(true);
+                        continue;
+                    }
+                    break;
+
+                case BATTLESHIP:
+                    System.out.println("Enter the coordinates for the Battleship (4 cells):");
+                    input = scanner.nextLine();
+                    if (createShip(input, ship, field)) {
+                        ship = Ship.SUBMARINE;
+                        field.printField(true);
+                        continue;
+                    }
+                    break;
+
+                case SUBMARINE:
+                    System.out.println("Enter the coordinates for the submarine (3 cells):");
+                    input = scanner.nextLine();
+                    if (createShip(input, ship, field)) {
+                        ship = Ship.CRUISER;
+                        field.printField(true);
+                        continue;
+                    }
+                    break;
+
+                case CRUISER:
+                    System.out.println("Enter the coordinates for the Cruiser (3 cells):");
+                    input = scanner.nextLine();
+                    if (createShip(input, ship, field)) {
+                        ship = Ship.DESTROYER;
+                        field.printField(true);
+                        continue;
+                    }
+                    break;
+
+                case DESTROYER:
+                    System.out.println("Enter the coordinates for the Destroyer (2 cells):");
+                    input = scanner.nextLine();
+                    if (createShip(input, ship, field)) {
+                        ship = Ship.NONE;
+                        field.printField(true);
+                        continue;
+                    }
+                    break;
+            }
+        }
+        Alert.getInformation(4);
     }
 }

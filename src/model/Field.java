@@ -1,6 +1,9 @@
 package model;
 
+import helper.Alert;
+
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * Class for creating the 10x10 field, as well as taking user coordinates for (in the future) placing ships and updating
@@ -8,10 +11,22 @@ import java.util.Objects;
  */
 public class Field {
     private final int[][] field;
+    private int shipCount;
+    private int aircraftCarrier;
+    private int battleship;
+    private int submarine;
+    private int cruiser;
+    private int destroyer;
 
     public Field() {
         int FIELD_SIZE = 10;
         this.field = new int[FIELD_SIZE][FIELD_SIZE];
+        this.shipCount = 5;
+        this.aircraftCarrier = 5;
+        this.battleship = 4;
+        this.submarine = 3;
+        this.cruiser = 3;
+        this.destroyer = 2;
     }
 
     /**
@@ -105,15 +120,15 @@ public class Field {
      * @param col Selected column
      * @return Cell value
      */
-    public int getCellValue(int row, int col) {
+    private int getCellValue(int row, int col) {
         return this.field[row][col];
     }
 
     /**
      * Updates current cell value
-     * 1 = Undamaged ship cell
-     * 2 = Damaged ship cell
-     * 3 = Missed shot
+     * 5-2 = Undamaged ship cell
+     * 6 = Damaged ship cell
+     * 1 = Missed shot
      *
      * @param row Selected row
      * @param col Selected column
@@ -121,6 +136,62 @@ public class Field {
      */
     public void setCellValue(int row, int col, int value) {
         this.field[row][col] = value;
+    }
+
+    /**
+     * Reduce the health of a particular ship by 1
+     * @param ship Ship to be damaged
+     */
+    private void damageShip(Ship ship) {
+        switch (ship) {
+            case AIRCRAFT_CARRIER:
+                this.aircraftCarrier--;
+                break;
+            case BATTLESHIP:
+                this.battleship--;
+                break;
+            case SUBMARINE:
+                this.submarine--;
+                break;
+            case CRUISER:
+                this.cruiser--;
+                break;
+            case DESTROYER:
+                this.destroyer--;
+                break;
+        }
+    }
+
+    /**
+     * Gets the current health status of a particular ship
+     * @param ship Ship to be checked
+     * @return ship health
+     */
+    private int getShipHealth(Ship ship) {
+        return switch (ship) {
+            case AIRCRAFT_CARRIER -> this.aircraftCarrier;
+            case BATTLESHIP -> this.battleship;
+            case SUBMARINE -> this.submarine;
+            case CRUISER -> this.cruiser;
+            case DESTROYER -> this.destroyer;
+            default -> 0;
+        };
+
+    }
+
+    /**
+     * Reduces the amount of active ships by 1
+     */
+    private void sinkShip() {
+        this.shipCount--;
+    }
+
+    /**
+     * Gets the current count of active ships
+     * @return ship count
+     */
+    public int getShipCount() {
+        return this.shipCount;
     }
 
     /**
@@ -197,11 +268,131 @@ public class Field {
      * @param col Current column being checked
      * @return True if position exists, else false
      */
-    public boolean isValidPosition(int row, int col) {
+    private boolean isValidPosition(int row, int col) {
         if (row < 0 || col < 0 || row > field.length - 1 || col > field[0].length - 1) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Takes user input
+     * Keeps count of active ships
+     * Game ends when shipCount == 0
+     */
+    public void takeShot(int player, Field otherField) {
+        Scanner scanner = new Scanner(System.in);
+        boolean isValid = false;
+
+        otherField.printField(false);
+        System.out.println("---------------------");
+        printField(true);
+
+        System.out.printf("Player %d, it's your turn:\n", player);
+
+            while (!isValid) {
+                String input;
+                int[] coordinate;
+                try {
+                    input = scanner.nextLine();
+
+                    coordinate = new int[]{Integer.parseInt(String.valueOf(input.charAt(0) - 65)),
+                            Integer.parseInt(input.replaceAll("\\D", "")) - 1};
+                } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
+                    Alert.getError(1);
+                    continue;
+                }
+
+                if (otherField.isValidPosition(coordinate[0], coordinate[1])) {
+                    if (otherField.getCellValue(coordinate[0], coordinate[1]) == 0
+                            || otherField.getCellValue(coordinate[0], coordinate[1]) == 1) {
+                        otherField.setCellValue(coordinate[0], coordinate[1], 1);
+                        Alert.getInformation(3);
+                        Alert.getInformation(4);
+                    } else {
+                        if (otherField.getCellValue(coordinate[0], coordinate[1]) == 6) {
+                            Alert.getInformation(1);
+                        } else if (otherField.getCellValue(coordinate[0], coordinate[1]) == 5) {
+                            otherField.setCellValue(coordinate[0], coordinate[1], 6);
+                            otherField.damageShip(Ship.AIRCRAFT_CARRIER);
+                            if (otherField.getShipHealth(Ship.AIRCRAFT_CARRIER) == 0) {
+                                otherField.sinkShip();
+                                if (otherField.getShipCount() == 0) {
+                                    break;
+                                }
+                                Alert.getInformation(2);
+                                Alert.getInformation(4);
+
+                            } else {
+                                Alert.getInformation(1);
+                                Alert.getInformation(4);
+                            }
+                        } else if (otherField.getCellValue(coordinate[0], coordinate[1]) == 4) {
+                            otherField.setCellValue(coordinate[0], coordinate[1], 6);
+                            otherField.damageShip(Ship.BATTLESHIP);
+                            if (otherField.getShipHealth(Ship.BATTLESHIP) == 0) {
+                                otherField.sinkShip();
+                                if (otherField.getShipCount() == 0) {
+                                    break;
+                                }
+                                Alert.getInformation(2);
+                                Alert.getInformation(4);
+                            } else {
+                                Alert.getInformation(1);
+                                Alert.getInformation(4);
+                            }
+                        } else if (otherField.getCellValue(coordinate[0], coordinate[1]) == 3) {
+                            otherField.setCellValue(coordinate[0], coordinate[1], 6);
+                            if (otherField.getShipHealth(Ship.SUBMARINE) == 0) {
+                                otherField.damageShip(Ship.CRUISER);
+                                if (otherField.getShipHealth(Ship.CRUISER) == 0) {
+                                    otherField.sinkShip();
+                                    if (otherField.getShipCount() == 0) {
+                                        break;
+                                    }
+                                    Alert.getInformation(2);
+                                    Alert.getInformation(4);
+                                } else {
+                                    Alert.getInformation(1);
+                                    Alert.getInformation(4);
+                                }
+                            } else {
+                                otherField.damageShip(Ship.SUBMARINE);
+                                if (otherField.getShipHealth(Ship.SUBMARINE) == 0) {
+                                    otherField.sinkShip();
+                                    if (otherField.getShipCount() == 0) {
+                                        break;
+                                    }
+                                    Alert.getInformation(2);
+                                    Alert.getInformation(4);
+                                } else {
+                                    Alert.getInformation(1);
+                                    Alert.getInformation(4);
+                                }
+                            }
+                        }
+                        else if (otherField.getCellValue(coordinate[0], coordinate[1]) == 2) {
+                            otherField.setCellValue(coordinate[0], coordinate[1], 6);
+                            otherField.damageShip(Ship.DESTROYER);
+                            if (otherField.getShipHealth(Ship.DESTROYER) == 0) {
+                                otherField.sinkShip();
+                                if (otherField.getShipCount() == 0) {
+                                    break;
+                                }
+                                Alert.getInformation(2);
+                                Alert.getInformation(4);
+                            } else {
+                                Alert.getInformation(1);
+                                Alert.getInformation(4);
+                            }
+                        }
+                    }
+                    isValid = true;
+                } else {
+                    Alert.getError(1);
+
+                }
+            }
     }
 }
 

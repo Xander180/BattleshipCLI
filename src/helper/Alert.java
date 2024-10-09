@@ -1,7 +1,8 @@
-package model;
+package helper;
+
+import java.util.Scanner;
 
 public class Alert {
-
     /**
      * Repository for all alert messages
      * @param errorType Error code
@@ -23,10 +24,22 @@ public class Alert {
     public static void getInformation(int infoType) {
         switch (infoType) {
             case 1:
-                System.out.println("You hit a ship! Try again:");
+                System.out.println("You hit a ship!");
                 break;
             case 2:
-                System.out.println("You sank a ship! Specify a new target:");
+                System.out.println("You sank a ship!");
+                break;
+            case 3:
+                System.out.println("You missed!");
+                break;
+            case 4:
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Press Enter and pass the move to another player");
+                scanner.nextLine();
+                System.out.flush();
+                break;
+            case 5:
+                System.out.println("You sank the last ship. You won. Congratulations!");
                 break;
         }
     }
